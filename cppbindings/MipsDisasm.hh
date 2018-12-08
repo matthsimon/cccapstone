@@ -10,18 +10,18 @@ class CMicroMipsCDisasm :
 {
 public:
 	CMicroMipsCDisasm(
-		__in unsigned int mode = cs_mode::CS_MODE_MICRO + cs_mode::CS_MODE_BIG_ENDIAN
+		unsigned int mode = cs_mode::CS_MODE_MICRO + cs_mode::CS_MODE_BIG_ENDIAN
 		) : CCsDisasm(cs_arch::CS_ARCH_MIPS, mode)
 	{
 	}
 };
 
-class CN64MipsCDisasm :
+class C64MipsCDisasm :
 	public CCsDisasm<CMipsInsClass>
 {
 public:
-	CN64MipsCDisasm(
-		__in unsigned int mode = cs_mode::CS_MODE_N64 + cs_mode::CS_MODE_BIG_ENDIAN
+	C64MipsCDisasm(
+		unsigned int mode = cs_mode::CS_MODE_64 + cs_mode::CS_MODE_BIG_ENDIAN
 		) : CCsDisasm(cs_arch::CS_ARCH_MIPS, mode)
 	{
 	}

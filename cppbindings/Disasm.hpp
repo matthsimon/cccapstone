@@ -11,8 +11,8 @@ protected:
 
 public:
 	CCsDisasm(
-		__in cs_arch arch,
-		__in unsigned int mode
+		cs_arch arch,
+		unsigned int mode
 		)
 	{
 		m_err = cs_open(arch, static_cast<cs_mode>(mode), m_csh.get());
@@ -23,39 +23,39 @@ public:
 //////////////////////////////////////////////////////////////////////////
 // runtime opcode info
 //////////////////////////////////////////////////////////////////////////
-	__forceinline
+	inline
 	ins_holder_t*
 	Disasm(
-		__in const void* code,
-		__in size_t size,
-		__in size_t baseAddr = 0
+		const void* code,
+		size_t size,
+		size_t baseAddr = 0
 		)
 	{
 		return new ins_holder_t(m_csh, code, size, baseAddr);
 	}
 
-	__forceinline
+	inline
 	cs_err
 	GetError()
 	{
 		return m_err;
 	}
 
-	__forceinline
+	inline
 	unsigned int
 	Version(
-		__inout int* major = nullptr,
-		__inout int* minor = nullptr
+		int* major = nullptr,
+		int* minor = nullptr
 		)
 	{
 		return cs_version(major, minor);
 	}
 
-	__forceinline
+	inline
 	static
 	const char* 
 	ErrToStr(
-		__in cs_err err
+		cs_err err
 		)
 	{
 		return cs_strerror(err);
@@ -73,11 +73,10 @@ public:
 		
 		http://capstone-engine.org/lang_c.html
 	*/
-	__forceinline
-	__checkReturn
+	inline
 	bool
 	SetSyntax(
-		__in cs_opt_value syntax
+		cs_opt_value syntax
 		)
 	{
 		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_SYNTAX, syntax);
@@ -89,11 +88,10 @@ public:
 		cs_opt_value::CS_OPT_OFF //by default
 		cs_opt_value::CS_OPT_ON
 	*/
-	__forceinline
-	__checkReturn
+	inline
 	bool
 	SetDetail(
-		__in cs_opt_value detailedInfo
+		cs_opt_value detailedInfo
 		)
 	{
 		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_DETAIL, detailedInfo);
@@ -115,11 +113,10 @@ public:
 
 		http://capstone-engine.org/lang_c.html
 	*/
-	__forceinline
-	__checkReturn
+	inline
 	bool
 	SetMode(
-		__in cs_mode mode
+		cs_mode mode
 		)
 	{
 		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_MODE, mode);
@@ -136,11 +133,10 @@ public:
 
 		http://capstone-engine.org/embed.html
 	*/
-	__forceinline
-	__checkReturn
+	inline
 	bool
 	SetMemMgrFunc(
-		__in cs_opt_mem& memMgrSetup
+		cs_opt_mem& memMgrSetup
 		)
 	{
 		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_MEM, reinterpret_cast<size_t>(&memMgrSetup));
@@ -154,11 +150,10 @@ public:
 
 		http://capstone-engine.org/skipdata.html
 	*/
-	__forceinline
-	__checkReturn
+	inline
 	bool
 	SetSkipData(
-		__in cs_opt_value skipData
+		cs_opt_value skipData
 		)
 	{
 		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_SKIPDATA, skipData);
@@ -174,11 +169,10 @@ public:
 		-> example : https://github.com/aquynh/capstone/blob/next/tests/test_skipdata.c
 		http://capstone-engine.org/skipdata.html
 	*/
-	__forceinline
-	__checkReturn
+	inline
 	bool
 	SetSkipDataCallback(
-		__in cs_opt_skipdata& dataCallbackSetup
+		cs_opt_skipdata& dataCallbackSetup
 		)
 	{
 		if (!SetSkipData(CS_OPT_ON))

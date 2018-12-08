@@ -11,7 +11,7 @@ class CArmDisasm64 :
 {
 public:
 	CArmDisasm64(
-		__in unsigned int mode = cs_mode::CS_MODE_THUMB + cs_mode::CS_MODE_LITTLE_ENDIAN
+		unsigned int mode = cs_mode::CS_MODE_ARM
 		) : CCsDisasm(cs_arch::CS_ARCH_ARM64, mode)
 	{
 	}
@@ -21,8 +21,8 @@ class CArmDisasm :
 	public CCsDisasm<CArmInsClass>
 {
 public:
-	CArmDisasm86(
-		__in unsigned int mode = cs_mode::CS_MODE_THUMB + cs_mode::CS_MODE_LITTLE_ENDIAN
+	CArmDisasm(
+		unsigned int mode = cs_mode::CS_MODE_THUMB + cs_mode::CS_MODE_LITTLE_ENDIAN
 		) : CCsDisasm(cs_arch::CS_ARCH_ARM, mode)
 	{
 	}
