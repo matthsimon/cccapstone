@@ -7,14 +7,14 @@
 template<typename InsGroup_t, typename Reg_t, typename Op_t, typename Ins_t>
 class CCsIns
 {
-	CS_HANDLE m_csh;
+	csh m_csh;
 	cs_insn* m_ins;
 
 	void operator=(CCsIns const&) = delete;
 	//CCsIns(const CCsIns &) = delete;//==> must be kicked out in the future, and CS_HANDLE not shared_ptr .. need redesign ...
 public:
 	CCsIns(
-		CS_HANDLE csh,
+		csh csh,
 		cs_insn* ins
 		) : m_csh(csh),
 			m_ins(ins)
@@ -33,7 +33,7 @@ public:
 		InsGroup_t groupId
 		) const
 	{
-		return cs_insn_group(*m_csh.get(), m_ins, groupId);
+		return cs_insn_group(m_csh, m_ins, groupId);
 	}
 
 	inline
@@ -42,7 +42,7 @@ public:
 		Reg_t regId
 		) const
 	{
-		return cs_reg_read(*m_csh.get(), m_ins, regId);
+		return cs_reg_read(m_csh, m_ins, regId);
 	}
 
 	inline
@@ -51,7 +51,7 @@ public:
 		Reg_t regId
 		) const
 	{
-		return cs_reg_write(*m_csh.get(), m_ins, regId);
+		return cs_reg_write(m_csh, m_ins, regId);
 	}
 
 	inline
@@ -60,7 +60,7 @@ public:
 		Op_t opType
 		) const
 	{
-		return cs_op_count(*m_csh.get(), m_ins, opType);
+		return cs_op_count(m_csh, m_ins, opType);
 	}
 
 	inline
@@ -70,7 +70,7 @@ public:
 		unsigned int opcodePosition = 0
 		) const
 	{
-		return cs_op_index(*m_csh.get(), m_ins, opType, opcodePosition);
+		return cs_op_index(m_csh, m_ins, opType, opcodePosition);
 	}
 
 	inline
@@ -79,7 +79,7 @@ public:
 		Reg_t reg
 		) const
 	{
-		return cs_reg_name(*m_csh.get(), reg);
+		return cs_reg_name(m_csh, reg);
 	}
 
 	inline
@@ -88,7 +88,7 @@ public:
 		Ins_t ins
 		) const
 	{
-		return cs_insn_name(*m_csh.get(), ins);
+		return cs_insn_name(m_csh, ins);
 	}
 
 	static

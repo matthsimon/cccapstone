@@ -6,7 +6,7 @@ template<typename CsInsClass_t>
 class CCsDisasm
 {
 protected:
-	CS_HANDLE m_csh;
+	csh m_csh;
 	cs_err m_err;
 
 public:
@@ -15,8 +15,12 @@ public:
 		unsigned int mode
 		)
 	{
-		m_err = cs_open(arch, static_cast<cs_mode>(mode), m_csh.get());
+		m_err = cs_open(arch, static_cast<cs_mode>(mode), &m_csh);
 	}
+
+    ~CCsDisasm() {
+        cs_close(&m_csh);
+    }
 
 	typedef CS_INSN_HOLDER<CsInsClass_t> ins_holder_t;
 	
@@ -79,7 +83,7 @@ public:
 		cs_opt_value syntax
 		)
 	{
-		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_SYNTAX, syntax);
+		return !cs_option(m_csh, cs_opt_type::CS_OPT_SYNTAX, syntax);
 	}
 
 	/*
@@ -94,7 +98,7 @@ public:
 		cs_opt_value detailedInfo
 		)
 	{
-		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_DETAIL, detailedInfo);
+		return !cs_option(m_csh, cs_opt_type::CS_OPT_DETAIL, detailedInfo);
 	}
 
 	/*
@@ -119,7 +123,7 @@ public:
 		cs_mode mode
 		)
 	{
-		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_MODE, mode);
+		return !cs_option(m_csh, cs_opt_type::CS_OPT_MODE, mode);
 	}
 
 	/*
@@ -139,7 +143,7 @@ public:
 		cs_opt_mem& memMgrSetup
 		)
 	{
-		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_MEM, reinterpret_cast<size_t>(&memMgrSetup));
+		return !cs_option(m_csh, cs_opt_type::CS_OPT_MEM, reinterpret_cast<size_t>(&memMgrSetup));
 	}
 	
 	/*
@@ -156,7 +160,7 @@ public:
 		cs_opt_value skipData
 		)
 	{
-		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_SKIPDATA, skipData);
+		return !cs_option(m_csh, cs_opt_type::CS_OPT_SKIPDATA, skipData);
 	}
 
 	/*
@@ -177,6 +181,6 @@ public:
 	{
 		if (!SetSkipData(CS_OPT_ON))
 			return false;
-		return !cs_option(*m_csh.get(), cs_opt_type::CS_OPT_SKIPDATA_SETUP, reinterpret_cast<size_t>(&dataCallbackSetup));
+		return !cs_option(m_csh, cs_opt_type::CS_OPT_SKIPDATA_SETUP, reinterpret_cast<size_t>(&dataCallbackSetup));
 	}
 };

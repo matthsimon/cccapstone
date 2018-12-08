@@ -3,18 +3,6 @@
 #include <capstone.h>
 #include <memory>
 
-struct CS_HANDLE :
-	public std::shared_ptr<csh>
-{
-	CS_HANDLE() :
-		std::shared_ptr<csh>(&m_handle, cs_close)
-	{
-	}
-
-private:
-	csh m_handle;
-};
-
 template<typename CsInsClass_t>
 struct CS_INSN_HOLDER
 {
@@ -32,7 +20,7 @@ struct CS_INSN_HOLDER
 	}
 
 	CS_INSN_HOLDER(
-		CS_HANDLE& csh,
+		csh csh,
 		const void* address,
 		size_t size,
 		size_t baseAddr
@@ -42,7 +30,7 @@ struct CS_INSN_HOLDER
 			m_csInstructions(nullptr)
 	{
 		Count = cs_disasm(
-			*m_csh.get(),
+			m_csh,
 			static_cast<const unsigned char*>(address),
 			size,
 			baseAddr,
@@ -64,5 +52,5 @@ protected:
 	friend class CCsDisasm;
 
 	cs_insn* m_csInstructions;
-	CS_HANDLE m_csh;
+	csh m_csh;
 };
