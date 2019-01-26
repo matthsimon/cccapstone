@@ -151,20 +151,41 @@ BOOST_AUTO_TEST_SUITE(BasicSuite);
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(test_basic, DisasmTest, DisasmTypes) {
     typename DisasmTest::Disasm dis;
-    BOOST_REQUIRE(!dis.GetError());
+    BOOST_REQUIRE(dis.isOpen());
 
     if (DisasmTest::syntax != CS_OPT_SYNTAX_DEFAULT) {
-        BOOST_REQUIRE(dis.SetSyntax(DisasmTest::syntax));
+        BOOST_REQUIRE(dis.setSyntax(DisasmTest::syntax));
     }
 
     if (DisasmTest::mode != UINT_MAX) {
-        BOOST_REQUIRE(dis.SetMode(static_cast<cs_mode>(DisasmTest::mode)));
+        BOOST_REQUIRE(dis.setMode(static_cast<cs_mode>(DisasmTest::mode)));
     }
 
-    auto insn = dis.Disasm(DisasmTest::code.data(), DisasmTest::code.size());
-    BOOST_REQUIRE(insn);
+    auto insn = dis.disasm(DisasmTest::code.data(), DisasmTest::code.size());
+    int counter = 0;
+    for (auto& i : insn) {
+        ++counter;
+    }
 
-    // std::cout << insn << std::endl;
+    BOOST_CHECK_EQUAL(insn.count(), counter);
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_basic_iter, DisasmTest, DisasmTypes) {
+    typename DisasmTest::Disasm dis;
+    BOOST_REQUIRE(dis.isOpen());
+
+    if (DisasmTest::syntax != CS_OPT_SYNTAX_DEFAULT) {
+        BOOST_REQUIRE(dis.setSyntax(DisasmTest::syntax));
+    }
+
+    if (DisasmTest::mode != UINT_MAX) {
+        BOOST_REQUIRE(dis.setMode(static_cast<cs_mode>(DisasmTest::mode)));
+    }
+
+    auto insnIt = dis.disasmIterator(DisasmTest::code.data(), DisasmTest::code.size());
+    for (auto& i : insnIt) {
+        continue;
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()

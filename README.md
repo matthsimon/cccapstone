@@ -20,11 +20,7 @@ c++ bindings for capstone disasembly framework (http://www.capstone-engine.org/ 
 
 **----------------------------------------------------------------------------------------**
 
-**3. examples**
-    
-    https://github.com/zer0mem/KernelProject/blob/capstone/KernelProject/src/CapstoneCppBindingsTest.hpp
-    
-**4. examples by hand (intel x86 - x64)**
+**3. examples (intel x86 - x64)**
                 
     /*
       f.e. for arm (vice versa with other architectures) can be 
@@ -45,17 +41,17 @@ c++ bindings for capstone disasembly framework (http://www.capstone-engine.org/ 
                       // cccapstone/cppbindings/<ARCHITECTURE>Disasm.hh for more available bindings
       
     //check if no error occured
-    if (dis.GetError())
+    if (dis.isOpen())
     	return;
     	
     //set how deep should capstone reverse instruction
-    dis.SetDetail(cs_opt_value::CS_OPT_ON);
+    dis.setDetail(cs_opt_value::CS_OPT_ON);
 
     //set syntax for output disasembly string
-    dis.SetSyntax(cs_opt_value::CS_OPT_SYNTAX_INTEL);
+    dis.setSyntax(cs_opt_value::CS_OPT_SYNTAX_INTEL);
     
     //*OPTIONAL* - set callback, when is encountered data - not resolved code -
-    dis.SetSkipDataCallback(cs_opt_skipdata{ 
+    dis.setSkipDataCallback(cs_opt_skipdata{ 
                                 ".UNKOWNBYTES : ", 
                                 SkipDataCallback, 
                                 nullptr 
@@ -66,21 +62,18 @@ c++ bindings for capstone disasembly framework (http://www.capstone-engine.org/ 
     //process disasembling
     auto insn = dis.Disasm(code, size);
     //check if disassembling succesfull
-    if (!insn.get())
+    if (!insn.count())
     	return;
     
     //print basic info
-    for (size_t i = 0; i < insn->Count; i++)
-      printf("-> 0x%p:\t%s\t%s\n", 
-                insn->Instructions(i).address, 
-                insn->Instructions(i).mnemonic, 
-                insn->Instructions(i).op_str);
+    for (auto& i : insn)
+      printf("-> 0x%p:\t%s\t%s\n", i.address, i.mnemonic, i.op_str);
     
     //how to gather advanced info is by example in debug-print function 
     --> print_insn_detail (https://github.com/aquynh/capstone/blob/master/tests/test_x86.c)
     
     //in future in capstone will be possible also filtering group of instructions (and far more .. :)
-    if (insn->Instructions(i).IsInInsGroup(x86_insn_group::X86_GRP_JUMP))
+    if (insn[i].isInInsGroup(x86_insn_group::X86_GRP_JUMP))
         printf("\nControl Flow change at : %p", insn->Instructions(i).address);
     
     
