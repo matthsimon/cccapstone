@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/matthsimon/cccapstone.svg?branch=master)](https://travis-ci.com/matthsimon/cccapstone)
+
 cccapstone
 ==========
 

@@ -1,0 +1,22 @@
+language: cpp
+compiler:
+    - gcc
+dist: xenial
+os: linux
+
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+            - sourceline: 'ppa:litenstein/boost-1-61-xenial'
+        packages:
+            - g++-8
+            - libboost-test1.63-dev
+
+before_script:
+    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
+    - mkdir _build
+    - cd _build
+    - cmake ..
+
+script: make && ctest .

@@ -38,7 +38,7 @@ install(TARGETS capstone-c++
         LIBRARY DESTINATION lib)
 
 ## tests
-find_package(Boost 1.68 REQUIRED COMPONENTS unit_test_framework)
+find_package(Boost 1.63 REQUIRED COMPONENTS unit_test_framework)
 set(BOOST_INCLUDE_DIRS $boost_installation_prefix/include)
 add_executable(test_basic_cpp tests/test_basic.cc)
 target_include_directories(test_basic_cpp PRIVATE ${BOOST_INCLUDE_DIRS}
